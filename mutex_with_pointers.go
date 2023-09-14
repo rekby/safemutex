@@ -1,17 +1,19 @@
 package safemutex
 
+import "sync"
+
 // MutexWithPointers contains guarded value inside, access to value allowed inside callbacks only
 // it allow to guarantee not access to the value without lock the mutex
 // zero value is usable as mutex with default options and zero value of guarded type
 type MutexWithPointers[T any] struct {
-	mutexBase[T]
+	mutexBase[T, sync.Mutex]
 }
 
-// NewWithPointers create Mutex with initial value and default options.
+// NewWithPointers create MutexWithPointers with initial value and default options.
 // NewWithPointers call internal checks for T and panic if checks failed, see MutexOptions for details
 func NewWithPointers[T any](value T) MutexWithPointers[T] {
 	res := MutexWithPointers[T]{
-		mutexBase: mutexBase[T]{
+		mutexBase: mutexBase[T, sync.Mutex]{
 			value: value,
 		},
 	}

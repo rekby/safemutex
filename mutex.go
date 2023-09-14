@@ -11,7 +11,7 @@ import (
 // Mutex deny to save value with any type of pointers, which allow accidentally change internal state.
 // it will panic if T contains any pointer.
 type Mutex[T any] struct {
-	mutexBase[T]
+	mutexBase[T, sync.Mutex]
 	initOnce    sync.Once
 	initialized bool // for tests only
 }
@@ -20,7 +20,7 @@ type Mutex[T any] struct {
 // New call internal checks for T and panic if checks failed, see MutexOptions for details
 func New[T any](value T) Mutex[T] {
 	res := Mutex[T]{
-		mutexBase: mutexBase[T]{
+		mutexBase: mutexBase[T, sync.Mutex]{
 			value: value,
 		},
 	}
