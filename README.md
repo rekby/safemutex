@@ -45,13 +45,19 @@ func main() {
 
 # Benchmark result
 
+Safe mutexes are optimized for performance and give an additional load within the measurement error.
+
 ```
 BenchmarkSyncMutexLock
-BenchmarkSyncMutexLock-10                	85375321	        13.61 ns/op	       0 B/op	       0 allocs/op
-BenchmarkSyncRWMutexLock
-BenchmarkSyncRWMutexLock-10              	64748929	        18.56 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSyncMutexLock-10                  	88132146	        13.57 ns/op	       0 B/op	       0 allocs/op
 BenchmarkSafeMutexLock
-BenchmarkSafeMutexLock-10                	86766590	        13.79 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSafeMutexLock-10                  	88716652	        13.56 ns/op	       0 B/op	       0 allocs/op
 BenchmarkSafeMutexWithPointersLock
-BenchmarkSafeMutexWithPointersLock-10    	87910747	        13.66 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSafeMutexWithPointersLock-10      	87819339	        13.64 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSyncRWMutexLock
+BenchmarkSyncRWMutexLock-10                	64879916	        18.52 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSafeRWMutexLock
+BenchmarkSafeRWMutexLock-10                	64612960	        18.50 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSafeRWMutexWithPointersLock
+BenchmarkSafeRWMutexWithPointersLock-10    	64686685	        18.58 ns/op	       0 B/op	       0 allocs/op
 ```
