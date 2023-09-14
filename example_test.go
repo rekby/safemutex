@@ -1,16 +1,16 @@
-package safe_mutex_test
+package safemutex_test
 
 import (
 	"fmt"
-	safe_mutex "safe-mutex"
+	"github.com/rekby/safemutex"
 )
 
 func ExampleNew() {
 	type Struct struct {
-		m safe_mutex.Mutex[int]
+		m safemutex.Mutex[int]
 	}
 
-	s := Struct{m: safe_mutex.New(1)}
+	s := Struct{m: safemutex.New(1)}
 
 	s.m.Lock(func(value int) (newValue int) {
 		return value + 1
@@ -33,10 +33,10 @@ func ExampleNew_with_struct() {
 		Val  int
 	}
 	type Struct struct {
-		m safe_mutex.Mutex[GuargedStruct]
+		m safemutex.Mutex[GuargedStruct]
 	}
 
-	s := Struct{m: safe_mutex.New(GuargedStruct{Name: "test-name", Val: 15})}
+	s := Struct{m: safemutex.New(GuargedStruct{Name: "test-name", Val: 15})}
 
 	s.m.Lock(func(value GuargedStruct) (newValue GuargedStruct) {
 		value.Val += 1
@@ -58,7 +58,7 @@ func ExampleNewWithOptions() {
 	val1 := 1
 	val2 := 2
 
-	m := safe_mutex.NewWithOptions(&val1, safe_mutex.MutexOptions{AllowPointers: true})
+	m := safemutex.NewWithOptions(&val1, safemutex.MutexOptions{AllowPointers: true})
 
 	m.Lock(func(value *int) (newValue *int) {
 		fmt.Println(*value)
@@ -77,7 +77,7 @@ func ExampleNewWithOptions() {
 
 func ExampleMutex_Lock() {
 	type Struct struct {
-		m safe_mutex.Mutex[int]
+		m safemutex.Mutex[int]
 	}
 
 	var s Struct

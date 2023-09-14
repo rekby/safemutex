@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/rekby/safe-mutex"
+	"github.com/rekby/safemutex"
 )
 
 type GuardedStruct struct {
@@ -11,13 +11,13 @@ type GuardedStruct struct {
 }
 
 func main() {
-	simleIntMutex := safe_mutex.New(1)
+	simleIntMutex := safemutex.New(1)
 	simleIntMutex.Lock(func(value int) (newValue int) {
 		fmt.Println(value)
 		return value
 	})
 
-	mutexWithStruct := safe_mutex.New(GuardedStruct{Name: "test", Val: 1})
+	mutexWithStruct := safemutex.New(GuardedStruct{Name: "test", Val: 1})
 	mutexWithStruct.Lock(func(value GuardedStruct) (newValue GuardedStruct) {
 		fmt.Println(value)
 		return value

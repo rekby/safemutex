@@ -11,6 +11,7 @@ jobs:
     env:
       GO_VERSION: "1.19"
     strategy:
+      fail-fast: false
       matrix:
         goVersion:
           - "1.18"      # oldest supported

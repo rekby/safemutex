@@ -1,12 +1,12 @@
-package safe_mutex_test
+package safemutex_test
 
 import (
 	"fmt"
-	safe_mutex "safe-mutex"
+	"github.com/rekby/safemutex"
 )
 
 func ExampleMutex_TryLock() {
-	m := safe_mutex.New(1)
+	m := safemutex.New(1)
 
 	var (
 		outerLock bool

@@ -1,4 +1,4 @@
-package safe_mutex
+package safemutex
 
 import (
 	"reflect"
