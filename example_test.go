@@ -54,11 +54,11 @@ func ExampleNew_with_struct() {
 	// name: "test-name", val: 16
 }
 
-func ExampleNewWithOptions() {
+func ExampleNewWithPointers() {
 	val1 := 1
 	val2 := 2
 
-	m := safemutex.NewWithOptions(&val1, safemutex.MutexOptions{AllowPointers: true})
+	m := safemutex.NewWithPointers(&val1)
 
 	m.Lock(func(value *int) (newValue *int) {
 		fmt.Println(*value)
