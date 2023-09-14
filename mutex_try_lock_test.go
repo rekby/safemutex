@@ -11,10 +11,10 @@ func TestTryLock(t *testing.T) {
 	tmpValue := -2
 	targetValue := 123
 	m := New(initialValue)
-	lockedOuter := m.TryLock(func(value int) (newValue int) {
+	lockedOuter := m.TryLock(func(synced int) int {
 		callCount++
 
-		lockedInner := m.TryLock(func(value int) (newValue int) {
+		lockedInner := m.TryLock(func(synced int) int {
 			t.Fatal()
 			return tmpValue
 		})

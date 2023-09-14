@@ -16,15 +16,15 @@ func ExampleMutex_TryLock() {
 		innerLock bool
 	)
 
-	outerLock = m.TryLock(func(value int) (newValue int) {
-		innerLock = m.TryLock(func(value int) (newValue int) {
+	outerLock = m.TryLock(func(synced int) int {
+		innerLock = m.TryLock(func(innerSynced int) int {
 			innerLock = true
-			value += 1
-			fmt.Println(value)
-			return value
+			innerSynced += 1
+			fmt.Println(innerSynced)
+			return innerSynced
 		})
-		fmt.Println(value)
-		return value
+		fmt.Println(synced)
+		return synced
 	})
 	fmt.Println("inner lock:", innerLock)
 	fmt.Println("outer lock:", outerLock)
@@ -33,4 +33,33 @@ func ExampleMutex_TryLock() {
 	// 1
 	// inner lock: false
 	// outer lock: true
+}
+
+func ExampleMutexWithPointers_TryLock() {
+	m := safemutex.NewWithPointers(map[string]int{})
+
+	var (
+		outerLock bool
+		innerLock bool
+	)
+
+	outerLock = m.TryLock(func(synced map[string]int) map[string]int {
+		innerLock = m.TryLock(func(innerSynced map[string]int) map[string]int {
+			innerLock = true
+			innerSynced["inner"] = 222
+			fmt.Println(innerSynced)
+			return innerSynced
+		})
+		synced["outer"] = 123
+		fmt.Println(synced)
+		return synced
+	})
+	fmt.Println("inner lock:", innerLock)
+	fmt.Println("outer lock:", outerLock)
+
+	// Output:
+	// map[outer:123]
+	// inner lock: false
+	// outer lock: true
+
 }

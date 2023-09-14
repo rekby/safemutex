@@ -42,7 +42,7 @@ func TestMutexPoisoned(t *testing.T) {
 			t.Fatal()
 		}
 
-		m.Lock(func(value int) (newValue int) {
+		m.Lock(func(synced int) int {
 			return secondValue
 		})
 	})

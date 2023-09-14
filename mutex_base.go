@@ -25,5 +25,4 @@ func (m *mutexBase[T]) callLocked(f ReadWriteCallback[T]) {
 
 	m.value = f(m.value)
 	hasPanic = false
-
 }
