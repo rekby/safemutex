@@ -24,7 +24,7 @@ func NewWithPointers[T any](value T) MutexWithPointers[T] {
 }
 
 // Lock - call f within locked mutex.
-// it will panic with ErrPoisoned if previous call exited without return value:
+// it will panic with ErrPoisoned if previous locked call exited without return value:
 // with panic or runtime.Goexit()
 func (m *MutexWithPointers[T]) Lock(f ReadWriteCallback[T]) {
 	m.m.Lock()
