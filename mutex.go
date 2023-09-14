@@ -25,6 +25,7 @@ func NewWithOptions[T any](value T, options MutexOptions) Mutex[T] {
 
 	res.validateLocked()
 
+	//nolint:govet
 	//goland:noinspection GoVetCopyLock
 	return res
 }
