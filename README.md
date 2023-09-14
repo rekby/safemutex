@@ -1,5 +1,5 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/rekby/safemutex.svg)](https://pkg.go.dev/github.com/rekby/safemutex)
-[![Coverage Status](https://coveralls.io/repos/github/rekby/safe-mutex/badge.svg?branch=master)](https://coveralls.io/github/rekby/safe-mutex?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/rekby/safemutex/badge.svg?branch=master)](https://coveralls.io/github/rekby/safemutex?branch=master)
 [![GoReportCard](https://goreportcard.com/badge/github.com/rekby/safemutex)](https://goreportcard.com/report/github.com/rekby/safemutex)
 
 # Safe mutex
