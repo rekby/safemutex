@@ -1,10 +1,13 @@
-package safe_mutex
+package safemutex
 
 import (
 	"reflect"
 	"sync"
 )
 
+// Mutex contains guarded value inside, access to value allowed inside callbacks only
+// it allow to guarantee not access to the value without lock the mutex
+// zero value is usable as mutex with default options and zero value of guarded type
 type Mutex[T any] struct {
 	m           sync.Mutex
 	value       T
@@ -13,10 +16,15 @@ type Mutex[T any] struct {
 	errWrap     errWrap
 }
 
+// New create Mutex with initial value and default options.
+// New call internal checks for T and panic if checks failed, see MutexOptions for details
 func New[T any](value T) Mutex[T] {
 	return NewWithOptions(value, MutexOptions{})
 }
 
+// NewWithOptions create Mutex with initial value and custom options.
+// MutexOptions allow to reduce default security when it needs.
+// NewWithOptions call internal checks for T and panic if checks failed, see MutexOptions for details
 func NewWithOptions[T any](value T, options MutexOptions) Mutex[T] {
 	res := Mutex[T]{
 		value:   value,
@@ -25,10 +33,15 @@ func NewWithOptions[T any](value T, options MutexOptions) Mutex[T] {
 
 	res.validateLocked()
 
+	//nolint:govet
 	//goland:noinspection GoVetCopyLock
 	return res
 }
 
+// Lock - call f within locked mutex.
+// it will panic if value type not pass internal checks
+// it will panic with ErrPoisoned if previous call exited without return value:
+// with panic or runtime.Goexit()
 func (m *Mutex[T]) Lock(f ReadWriteCallback[T]) {
 	m.m.Lock()
 	defer m.m.Unlock()
@@ -43,7 +56,7 @@ func (m *Mutex[T]) callLocked(f ReadWriteCallback[T]) {
 
 	defer func() {
 		if hasPanic && !m.options.AllowPoisoned {
-			m.errWrap = errWrap{ErrMutexPoisoned}
+			m.errWrap = errWrap{ErrPoisoned}
 		}
 	}()
 
