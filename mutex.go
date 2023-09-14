@@ -2,6 +2,7 @@ package safemutex
 
 import (
 	"reflect"
+	"sync"
 )
 
 // Mutex contains guarded value inside, access to value allowed inside callbacks only
@@ -11,7 +12,8 @@ import (
 // it will panic if T contains any pointer.
 type Mutex[T any] struct {
 	mutexBase[T]
-	initialized bool
+	initOnce    sync.Once
+	initialized bool // for tests only
 }
 
 // New create Mutex with initial value and default options.
@@ -45,15 +47,14 @@ func (m *Mutex[T]) Lock(f ReadWriteCallback[T]) {
 func (m *Mutex[T]) validateLocked() {
 	m.baseValidateLocked()
 
-	if m.initialized {
-		return
-	}
+	m.initOnce.Do(m.initLocked)
+}
 
-	// check pointers
+func (m *Mutex[T]) initLocked() {
 	if checkTypeCanContainPointers(reflect.TypeOf(m.value)) {
-		panic(errContainPointers)
+		m.errWrap.err = errContainPointers
+		panic(m.errWrap)
 	}
-
 	m.initialized = true
 }
 
