@@ -1,6 +1,6 @@
-[![Go Reference](https://pkg.go.dev/badge/github.com/rekby/safe-mutex.svg)](https://pkg.go.dev/github.com/rekby/safe-mutex)
+[![Go Reference](https://pkg.go.dev/badge/github.com/rekby/safemutex.svg)](https://pkg.go.dev/github.com/rekby/safemutex)
 [![Coverage Status](https://coveralls.io/repos/github/rekby/safe-mutex/badge.svg?branch=master)](https://coveralls.io/github/rekby/safe-mutex?branch=master)
-[![GoReportCard](https://goreportcard.com/badge/github.com/rekby/safe-mutex)](https://goreportcard.com/report/github.com/rekby/safe-mutex)
+[![GoReportCard](https://goreportcard.com/badge/github.com/rekby/safemutex)](https://goreportcard.com/report/github.com/rekby/safemutex)
 
 # Safe mutex
 
@@ -10,7 +10,7 @@ Main idea: mutex contains guarded data and no way to use the data with unlocked 
 
 get command:
 ```bash
-go get github.com/rekby/safe-mutex
+go get github.com/rekby/safemutex
 ```
 
 Example:
@@ -19,7 +19,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/rekby/safe-mutex"
+	"github.com/rekby/safemutex"
 )
 
 type GuardedStruct struct {
