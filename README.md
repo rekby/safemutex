@@ -41,3 +41,17 @@ func main() {
 	})
 }
 ```
+
+
+# Benchmark result
+
+```
+BenchmarkSyncMutexLock
+BenchmarkSyncMutexLock-10                	85375321	        13.61 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSyncRWMutexLock
+BenchmarkSyncRWMutexLock-10              	64748929	        18.56 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSafeMutexLock
+BenchmarkSafeMutexLock-10                	86766590	        13.79 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSafeMutexWithPointersLock
+BenchmarkSafeMutexWithPointersLock-10    	87910747	        13.66 ns/op	       0 B/op	       0 allocs/op
+```
