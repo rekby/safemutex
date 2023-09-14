@@ -3,6 +3,12 @@
 
 package safe_mutex
 
+// TryLock - call f within locked mutex if locked successfully.
+// returned true if locked successfully
+// return true if mutex already locked
+// it will panic if value type not pass internal checks
+// it will panic with ErrPoisoned if locked successfully and previous call exited without return value:
+// with panic or runtime.Goexit()
 func (m *Mutex[T]) TryLock(f ReadWriteCallback[T]) bool {
 	locked := m.m.TryLock()
 	if !locked {

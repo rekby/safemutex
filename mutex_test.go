@@ -82,7 +82,7 @@ func TestMutexPoisoned(t *testing.T) {
 
 		defer func() {
 			err := recover().(error)
-			if !errors.Is(err, ErrMutexPoisoned) {
+			if !errors.Is(err, ErrPoisoned) {
 				t.Fatal(err)
 			}
 			if m.value != targetValue {

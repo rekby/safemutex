@@ -2,8 +2,9 @@ package safe_mutex
 
 import "errors"
 
-var errContainPointers = errors.New("safe mutex: value type possible to contain pointers")
-var ErrMutexPoisoned = errors.New("safe mutex: mutex poisoned")
+var errContainPointers = errors.New("safe mutex: value type possible to contain pointers, use NewWithOptions for allow pointers into guarded value")
+
+var ErrPoisoned = errors.New("safe mutex: mutex poisoned (exit from callback with panic), use NewWithOptions for allow use poisoned value")
 
 // errWrap need for deny direct compare with returned errors
 type errWrap struct {
