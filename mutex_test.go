@@ -7,12 +7,12 @@ import (
 	"time"
 )
 
-func TestZeroOk(t *testing.T) {
+func TestMutexZero(t *testing.T) {
 	targetValue := 123
 
 	var m Mutex[int]
 	callCount := 0
-	m.Lock(func(value int) (newValue int) {
+	m.Lock(func(synced int) int {
 		callCount++
 		return targetValue
 	})
@@ -25,18 +25,18 @@ func TestZeroOk(t *testing.T) {
 	}
 }
 
-func TestLockedOk(t *testing.T) {
+func TestMutexLocked(t *testing.T) {
 	tmpValue := -1
 	targetValue := 123
 
 	var m Mutex[int]
 	callCount := 0
 	innerCompleted := make(chan bool)
-	m.Lock(func(value int) (newValue int) {
+	m.Lock(func(synced int) int {
 		callCount++
 
 		go func() {
-			m.Lock(func(value int) (newValue int) {
+			m.Lock(func(innerSynced int) int {
 				callCount++
 				return targetValue
 			})
@@ -60,7 +60,7 @@ func TestNew(t *testing.T) {
 	t.Run("WithPointers", func(t *testing.T) {
 		defer func() {
 			err := recover()
-			if err != errContainPointers {
+			if !errors.Is(err.(error), errContainPointers) {
 				t.Fatal(err)
 			}
 		}()
