@@ -12,7 +12,11 @@ func TestMutexWithPointersZero(t *testing.T) {
 	callCount := 0
 	m.Lock(func(synced map[string]int) map[string]int {
 		callCount++
-		synced = map[string]int{"test": targetValue}
+		if synced == nil {
+			synced = map[string]int{}
+		}
+
+		synced["test"] = targetValue
 		return synced
 	})
 

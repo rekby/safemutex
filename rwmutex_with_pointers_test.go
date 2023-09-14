@@ -12,7 +12,10 @@ func TestRWMutexWithPointersZeroOk(t *testing.T) {
 	callCount := 0
 	m.Lock(func(synced map[string]int) map[string]int {
 		callCount++
-		synced = map[string]int{"test": targetValue}
+		if synced == nil {
+			synced = map[string]int{}
+		}
+		synced["test"] = targetValue
 		return synced
 	})
 
@@ -70,9 +73,10 @@ func TestRWMutexWithPointersReadLocked(t *testing.T) {
 	called := 0
 	m.Lock(func(synced map[string]int) map[string]int {
 		called++
-		synced = map[string]int{
-			key: targetValue,
+		if synced == nil {
+			synced = map[string]int{}
 		}
+		synced[key] = targetValue
 		return synced
 	})
 

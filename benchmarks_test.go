@@ -14,6 +14,7 @@ func BenchmarkSyncMutexLock(b *testing.B) {
 	var m sync.Mutex
 
 	m.Lock()
+	val++
 	m.Unlock()
 
 	b.ResetTimer()
@@ -85,6 +86,7 @@ func BenchmarkSyncRWMutexLock(b *testing.B) {
 	var m sync.RWMutex
 
 	m.Lock()
+	val++
 	m.Unlock()
 
 	b.ResetTimer()
