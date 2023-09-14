@@ -47,6 +47,10 @@ func main() {
 
 Safe mutexes are optimized for performance and give an additional load within the measurement error.
 
+Safe mutex performance depends on size of stored structure. Benchmarks was with one int value.
+If safe mutex in hot way and has a large structure - use MutexWithPointers or RWMutexWithPointers and store
+a pointer to structure in mutex. It will some reduce guarantees, but will better performance.  
+
 ```
 BenchmarkSyncMutexLock
 BenchmarkSyncMutexLock-10                  	88132146	        13.57 ns/op	       0 B/op	       0 allocs/op
