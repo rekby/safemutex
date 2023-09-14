@@ -9,6 +9,8 @@ package safemutex
 // it will panic if value type not pass internal checks
 // it will panic with ErrPoisoned if locked successfully and previous call exited without return value:
 // with panic or runtime.Goexit()
+//
+// Available since go 1.19 only
 func (m *Mutex[T]) TryLock(f ReadWriteCallback[T]) bool {
 	locked := m.m.TryLock()
 	if !locked {
