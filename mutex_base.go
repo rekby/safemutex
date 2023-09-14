@@ -15,14 +15,7 @@ func (m *mutexBase[T]) baseValidateLocked() {
 }
 
 func (m *mutexBase[T]) callLocked(f ReadWriteCallback[T]) {
-	hasPanic := true
-
-	defer func() {
-		if hasPanic {
-			m.errWrap = errWrap{ErrPoisoned}
-		}
-	}()
-
+	m.errWrap.err = ErrPoisoned
 	m.value = f(m.value)
-	hasPanic = false
+	m.errWrap.err = nil
 }
