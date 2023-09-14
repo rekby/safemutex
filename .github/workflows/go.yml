@@ -1,0 +1,53 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    env:
+      GO_VERSION: "1.19"
+    strategy:
+      matrix:
+        goVersion:
+          - "1.18"      # oldest supported
+          - "1.19"      # first with mutex TryLock
+          - "oldstable" # prev go version
+          - "stable"    # latest stable
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: ${{ matrix.goVersion }}
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v -race ./...
+
+    - name: Test with coverage profiler
+      if: ${{ matrix.goVersion == env.GO_VERSION }}
+      run: go test -test.count=10 -race -covermode atomic -coverprofile=covprofile.out  ./...
+
+    - name: golangci-lint
+      if: ${{ matrix.goVersion == env.GO_VERSION }}
+      uses: golangci/golangci-lint-action@v2
+      with:
+        version: v1.54.2
+
+    - name: Coveralls install goveralls
+      if: ${{ matrix.goVersion == env.GO_VERSION }}
+      run: go install github.com/mattn/goveralls@latest
+    
+    - name: Coveralls push
+      if: ${{ matrix.goVersion == env.GO_VERSION }}
+      run: goveralls -coverprofile=covprofile.out -service=github
+      env:
+        COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
