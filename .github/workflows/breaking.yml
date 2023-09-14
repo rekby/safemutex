@@ -7,6 +7,8 @@ on:
 
 jobs:
   gorelease:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Install Go
