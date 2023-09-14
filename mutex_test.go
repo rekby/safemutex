@@ -56,8 +56,8 @@ func TestLockedOk(t *testing.T) {
 	}
 }
 
-func TestValueWithPointers(t *testing.T) {
-	t.Run("Default", func(t *testing.T) {
+func TestNew(t *testing.T) {
+	t.Run("WithPointers", func(t *testing.T) {
 		defer func() {
 			err := recover()
 			if err != errContainPointers {
@@ -67,85 +67,8 @@ func TestValueWithPointers(t *testing.T) {
 
 		_ = New(struct{ v *int }{})
 	})
-	t.Run("AllowPointers", func(t *testing.T) {
-		_ = NewWithOptions(struct{ v *int }{}, MutexOptions{AllowPointers: true})
-	})
-}
-
-func TestMutexPoisoned(t *testing.T) {
-	t.Run("Default", func(t *testing.T) {
-		initialValue := 123
-		secondValue := -1
-		targetValue := initialValue
-
-		m := New(initialValue)
-
-		defer func() {
-			err := recover().(error)
-			if !errors.Is(err, ErrPoisoned) {
-				t.Fatal(err)
-			}
-			if m.value != targetValue {
-				t.Fatal(m.value)
-			}
-		}()
-
-		hasPanic := false
-
-		// panic in mutex
-		func() {
-			defer func() {
-				if recover() != nil {
-					hasPanic = true
-				}
-			}()
-
-			m.Lock(func(value int) (newValue int) {
-				panic("test")
-			})
-		}()
-
-		if !hasPanic {
-			t.Fatal()
-		}
-
-		m.Lock(func(value int) (newValue int) {
-			return secondValue
-		})
-	})
-	t.Run("WithAllowPoisoned", func(t *testing.T) {
-		initialValue := -1
-		secondValue := 123
-		targetValue := secondValue
-
-		m := NewWithOptions(initialValue, MutexOptions{AllowPoisoned: true})
-
-		hasPanic := false
-
-		// panic in mutex
-		func() {
-			defer func() {
-				if recover() != nil {
-					hasPanic = true
-				}
-			}()
-
-			m.Lock(func(value int) (newValue int) {
-				panic("test")
-			})
-		}()
-
-		if !hasPanic {
-			t.Fatal()
-		}
-
-		m.Lock(func(value int) (newValue int) {
-			return secondValue
-		})
-
-		if m.value != targetValue {
-			t.Fatal(m.value)
-		}
+	t.Run("WithoutPointers", func(t *testing.T) {
+		_ = New(struct{ v int }{})
 	})
 }
 

@@ -12,14 +12,14 @@ type GuardedStruct struct {
 
 func main() {
 	simleIntMutex := safemutex.New(1)
-	simleIntMutex.Lock(func(value int) (newValue int) {
-		fmt.Println(value)
-		return value
+	simleIntMutex.Lock(func(synced int) int {
+		fmt.Println(synced)
+		return synced
 	})
 
 	mutexWithStruct := safemutex.New(GuardedStruct{Name: "test", Val: 1})
-	mutexWithStruct.Lock(func(value GuardedStruct) (newValue GuardedStruct) {
-		fmt.Println(value)
-		return value
+	mutexWithStruct.Lock(func(synced GuardedStruct) GuardedStruct {
+		fmt.Println(synced)
+		return synced
 	})
 }
